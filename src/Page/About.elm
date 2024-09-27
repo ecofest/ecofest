@@ -1,25 +1,18 @@
-# EkoFest [![Netlify Status](https://api.netlify.com/api/v1/badges/0cfcd65b-b2af-4791-88d1-0d63a30b0553/deploy-status)](https://app.netlify.com/sites/ekofest/deploys)
+module Page.About exposing (view)
 
-A lightweight and efficient tool for calculating the carbon footprint of events.
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Markdown
 
-> [!TIP]
-> This project is built with [Elm](https://elm-lang.org/) and
-> [Publicodes](https://publi.codes/)!
 
-> [!IMPORTANT]
-> 🇫🇷 Ekofest website, model and documentation are almost exclusively written in French. Please, raise an issue if you are interested and do not speak French.
+view : Html msg
+view =
+    div [ class "prose max-w-full" ] <| Markdown.toHtml Nothing aboutContent
 
-## Installation
 
-```bash
-yarn install
-```
-
-## Usage
-
-```bash
-yarn dev
-```
+aboutContent : String
+aboutContent =
+    """# À propos
 
 ## C'est quoi ?
 
@@ -80,3 +73,4 @@ Si vous avez une question, une suggestion ou un retour de bug vous pouvez nous �
 
 -   emile.rolley@tuta.io
 -   clement.auger@beta.gouv.fr
+"""

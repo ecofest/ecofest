@@ -187,6 +187,8 @@ viewFooter =
                 ]
             , nav []
                 [ h6 [ class "footer-title" ] [ text "Liens utiles" ]
+                , Link.internal [ href "/about" ]
+                    [ text "À propos" ]
                 , Link.internal [ href "/documentation" ]
                     [ text "Documentation du modèle" ]
                 , Link.external [ href "https://github.com/ekofest/publicodes-evenements" ]

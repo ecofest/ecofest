@@ -16,6 +16,7 @@ import Html.Events exposing (..)
 import Json.Decode as Decode
 import Json.Decode.Pipeline as Decode
 import Json.Encode
+import Page.About as About
 import Page.Documentation as Documentation
 import Page.Home as Home
 import Page.NotFound as NotFound
@@ -57,6 +58,7 @@ type alias Model =
 type Page
     = Home Home.Model
     | Documentation Documentation.Model
+    | About S.Data
     | NotFound S.Data
 
 
@@ -108,6 +110,9 @@ exit model =
         Documentation m ->
             m.session
 
+        About session ->
+            session
+
         NotFound session ->
             session
 
@@ -147,6 +152,9 @@ router url model =
 
             else
                 ( { model | page = NotFound session }, Cmd.none )
+
+        [ "about" ] ->
+            ( { model | page = About session }, Cmd.none )
 
         _ ->
             ( { model | page = NotFound session }, Cmd.none )
@@ -224,6 +232,11 @@ update msg model =
                     , Cmd.none
                     )
 
+                About s ->
+                    ( { model | page = About { s | engineInitialized = True } }
+                    , Cmd.none
+                    )
+
                 NotFound s ->
                     ( { model | page = NotFound { s | engineInitialized = True } }
                     , Cmd.none
@@ -290,6 +303,9 @@ update msg model =
                         Documentation m ->
                             { model | page = Documentation (S.openPersonasModal m) }
 
+                        About s ->
+                            { model | page = About { s | alreadyOpenedPersonasModal = True } }
+
                         NotFound s ->
                             { model | page = NotFound { s | alreadyOpenedPersonasModal = True } }
             in
@@ -311,6 +327,9 @@ updateSituation situation model =
 
                 Documentation m ->
                     { model | page = Documentation (S.updateSituation (\_ -> situation) m) }
+
+                About s ->
+                    { model | page = About { s | situation = s.situation } }
 
                 NotFound s ->
                     { model | page = NotFound { s | situation = s.situation } }
@@ -357,6 +376,13 @@ view model =
                     | title = "Documentation" ++ " - " ++ H.getTitle session.rawRules m.rule
                     , content = Html.map DocumentationMsg (Documentation.view m)
                     , showReactRoot = True
+                }
+
+        About _ ->
+            Template.view
+                { baseConfig
+                    | title = "À propos"
+                    , content = About.view
                 }
 
         NotFound _ ->
